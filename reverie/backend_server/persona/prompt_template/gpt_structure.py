@@ -7,20 +7,21 @@ Description: Wrapper functions for calling OpenAI APIs.
 import json
 import random
 import openai
+from openai import OpenAI
 import time 
 
 from utils import *
 
 openai.api_key = openai_api_key
-
+client = OpenAI(api_key=openai_api_key)
 def temp_sleep(seconds=0.1):
   time.sleep(seconds)
 
 def ChatGPT_single_request(prompt): 
   temp_sleep()
 
-  completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+  completion = client.chat.completions.create(
+    model="gpt-3.5-turbo-1106", 
     messages=[{"role": "user", "content": prompt}]
   )
   return completion["choices"][0]["message"]["content"]
@@ -45,7 +46,7 @@ def GPT4_request(prompt):
   temp_sleep()
 
   try: 
-    completion = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
     model="gpt-4", 
     messages=[{"role": "user", "content": prompt}]
     )
@@ -70,7 +71,7 @@ def ChatGPT_request(prompt):
   """
   # temp_sleep()
   try: 
-    completion = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
     model="gpt-3.5-turbo", 
     messages=[{"role": "user", "content": prompt}]
     )
@@ -277,7 +278,7 @@ def get_embedding(text, model="text-embedding-ada-002"):
   text = text.replace("\n", " ")
   if not text: 
     text = "this is blank"
-  return openai.Embedding.create(
+  return client.embeddings.create(
           input=[text], model=model)['data'][0]['embedding']
 
 
