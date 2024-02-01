@@ -50,10 +50,10 @@ def GPT4_request(prompt):
     model="gpt-4", 
     messages=[{"role": "user", "content": prompt}]
     )
-    return completion["choices"][0]["message"]["content"]
+    return completion.choices[0].message.content
   
-  except: 
-    print ("ChatGPT ERROR")
+  except Exception as e: 
+    print ("ChatGPT ERROR:" + str(e))
     return "ChatGPT ERROR"
 
 
@@ -75,10 +75,10 @@ def ChatGPT_request(prompt):
     model="gpt-3.5-turbo", 
     messages=[{"role": "user", "content": prompt}]
     )
-    return completion["choices"][0]["message"]["content"]
+    return completion.choices[0].message.content
   
-  except: 
-    print ("ChatGPT ERROR")
+  except Exception as e:  
+    print ("ChatGPT ERROR:" + str(e))
     return "ChatGPT ERROR"
 
 
@@ -209,7 +209,7 @@ def GPT_request(prompt, gpt_parameter):
   """
   temp_sleep()
   try: 
-    response = openai.Completion.create(
+    response = client.completions.create(
                 model=gpt_parameter["engine"],
                 prompt=prompt,
                 temperature=gpt_parameter["temperature"],
@@ -220,8 +220,8 @@ def GPT_request(prompt, gpt_parameter):
                 stream=gpt_parameter["stream"],
                 stop=gpt_parameter["stop"],)
     return response.choices[0].text
-  except: 
-    print ("TOKEN LIMIT EXCEEDED")
+  except Exception as e: 
+    print ("TOKEN LIMIT EXCEEDED:" + str(e))
     return "TOKEN LIMIT EXCEEDED"
 
 
@@ -274,16 +274,16 @@ def safe_generate_response(prompt,
   return fail_safe_response
 
 
-def get_embedding(text, model="text-embedding-ada-002"):
+def get_embedding(text, model="text-embedding-3-small"):
   text = text.replace("\n", " ")
   if not text: 
     text = "this is blank"
   return client.embeddings.create(
-          input=[text], model=model)['data'][0]['embedding']
+          input=[text], model=model).data[0].embedding
 
 
 if __name__ == '__main__':
-  gpt_parameter = {"engine": "text-davinci-003", "max_tokens": 50, 
+  gpt_parameter = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 50, 
                    "temperature": 0, "top_p": 1, "stream": False,
                    "frequency_penalty": 0, "presence_penalty": 0, 
                    "stop": ['"']}
