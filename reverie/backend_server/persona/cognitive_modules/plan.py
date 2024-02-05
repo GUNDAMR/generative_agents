@@ -10,9 +10,8 @@ import random
 import sys
 import time
 
-from reverie.backend_server.persona.persona import Persona
-sys.path.append('../../')
 
+sys.path.append('../../')
 from global_methods import *
 from persona.prompt_template.run_gpt_prompt import *
 from persona.cognitive_modules.retrieve import *
@@ -520,7 +519,7 @@ def _long_term_planning(persona, new_day):
 
 
 
-def   _determine_action(persona:Persona, maze): 
+def   _determine_action(persona, maze): 
   """
   Creates the next action sequence for the persona. 
   The main goal of this function is to run "add_new_action" on the persona's 
@@ -930,7 +929,7 @@ def _wait_react(persona, reaction_mode):
     act_pronunciatio, act_obj_description, act_obj_pronunciatio, act_obj_event)
 
 
-def plan(persona:Persona, maze, personas, new_day, retrieved): 
+def plan(persona, maze, personas, new_day, retrieved): 
   """
   Main cognitive function of the chain. It takes the retrieved memory and 
   perception, as well as the maze and the first day state to conduct both 
